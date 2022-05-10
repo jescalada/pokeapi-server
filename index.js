@@ -10,6 +10,9 @@ app.use(bodyparser.urlencoded({
     extended: true
 }));
 
+// Tells our app to keep in mind the folder called "public", where we have various assets
+app.use(express.static(__dirname + '/public'));
+
 const pokemonSchema = new mongoose.Schema({
     name: String,
     types: [String],
@@ -27,7 +30,7 @@ mongoose.connect("mongodb+srv://juan:Rocco123@cluster0.nxfhi.mongodb.net/pokemon
 });
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname+'/index.html'));
+    res.sendFile('public/index.html');
 })
 
 app.get('/pokemon/:pokemonId', (req, res) => {
