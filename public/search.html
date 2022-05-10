@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,24 +16,33 @@
 <body>
     <header>
         <h1>
-            Poké-info
+            Search Pokemon
         </h1>
     </header>
 
     <nav>
-        <a href="./index.html" class="active">
+        <a href="./index.html">
             Home
         </a>
-        <a href="./search.html">
+        <a href="./search.html" class="active">
             Search
         </a>
     </nav>
 
     <main>
+        <div class="row">Search By:</div>
+        <div id="search-form" class="row">
+            <div id="search-options" class="col">
+                <button onclick="searchByName()">Name</button>
+                <button onclick="searchByType()">Type</button>
+                <button onclick="searchByAbility()">Ability</button>
+            </div>
+        </div>
         <div class="row">
-            <p>
-                Welcome to Poke-info! Search a pokemon by using the search bar above, or click on one of the pokemon below to see their info.
-            </p>
+            <input id="search-box" type="text" placeholder="Search...">
+        </div>
+        <div id="results">
+
         </div>
     </main>
 
@@ -52,6 +62,7 @@
         <div class="footer-copyright">© 2022 <a href="/">Juan Escalada</a>
         </div>
     </footer>
-    <script src="index.js"></script>
+    <script src="search.js"></script>
 </body>
+
 </html>
