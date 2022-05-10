@@ -1,7 +1,7 @@
 async function loadPokemonById(pokemonId) {
     try {
-        const pokemon = await $.get(`https://pokeapi.co/api/v2/pokemon/${pokemonId}/`, function (pokemon, status) {});
-        return pokemon;
+        const pokemon = await $.get(`/pokemon/${pokemonId}/`, function (pokemon, status) {});
+        return pokemon[0];
     } catch {
         let result = `
             <p>Pokemon #${pokemonId} does not exist!</p>
@@ -12,8 +12,8 @@ async function loadPokemonById(pokemonId) {
 
 async function loadPokemonByName(pokemonName) {
     try {
-        const pokemon = await $.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}/`, function (pokemon, status, xhr) {});
-        return pokemon;
+        const pokemon = await $.get(`/name/${pokemonName}/`, function (pokemon, status, xhr) {});
+        return pokemon[0];
     } catch {
         let result = `
             <p>${pokemonName} does not exist!</p>
@@ -24,7 +24,7 @@ async function loadPokemonByName(pokemonName) {
 
 async function loadPokemonListByType(type) {
     try {
-        return await $.get(`https://pokeapi.co/api/v2/type/${type}/`, function (pokemon, status) {});
+        return await $.get(`/type/${type}/`, function (pokemon, status) {});
     } catch {
         let result = `
             <p>Did not find any pokemon of type ${type}.</p>
@@ -35,7 +35,7 @@ async function loadPokemonListByType(type) {
 
 async function loadPokemonListByAbility(ability) {
     try {
-        return await $.get(`https://pokeapi.co/api/v2/ability/${ability}/`, function (pokemon, status) {});
+        return await $.get(`/ability/${ability}/`, function (pokemon, status) {});
     } catch {
         let result = `
             <p>Did not find any pokemon with the ability ${ability}.</p>
@@ -50,14 +50,14 @@ async function getPokemonBasicData(name) {
     let result = {
         id: pokemon['id'],
         name: pokemon['name'],
-        sprite: pokemon.sprites.other['official-artwork'].front_default
+        sprite: pokemon.sprite
     };
     return result;
 }
 
 // Searches a pokemon by name and appends it to the DOM if it exists
 async function searchByName() {
-    let name = $("#search-box").val().toLowerCase();
+    let name = $("#search-box").val();
     await getPokemonBasicData(name).then((pokemon) => {
         let grid = `
             <div id="grid">
@@ -81,7 +81,7 @@ async function searchByName() {
 }
 
 async function searchByAbility() {
-    let ability = $("#search-box").val().toLowerCase().replace(/ /g, "-"); // If the word has spaces, replace them with dashes to match API format
+    let ability = $("#search-box").val(); // If the word has spaces, replace them with dashes to match API format
     let resultList = await loadPokemonListByAbility(ability);
     let numberOfResults = resultList.pokemon.length;
     let rows = Math.ceil(numberOfResults / 3);
@@ -111,7 +111,7 @@ async function searchByAbility() {
 }
 
 async function searchByType() {
-    let type = $("#search-box").val().toLowerCase();
+    let type = $("#search-box").val();
     let resultList = await loadPokemonListByType(type);
     let numberOfResults = resultList.pokemon.length;
     let rows = Math.ceil(numberOfResults / 3);
