@@ -47,7 +47,7 @@ app.get('/name/:pokemonName', (req, res) => {
         name: req.params.pokemonName
     }, function (err, pokemon) {
         if (err) {
-            console.log("Error " + err);
+            console.log("Error: " + err);
         }
         res.json(pokemon);
     });
