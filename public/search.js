@@ -113,7 +113,7 @@ async function searchByAbility() {
 async function searchByType() {
     let type = $("#search-box").val();
     let resultList = await loadPokemonListByType(type);
-    let numberOfResults = resultList.pokemon.length;
+    let numberOfResults = resultList.length;
     let rows = Math.ceil(numberOfResults / 3);
     let grid = `
         <div id="grid">
@@ -125,7 +125,7 @@ async function searchByType() {
             if (index >= numberOfResults) {
                 break;
             }
-            pokemonJSON = resultList.pokemon[index++].pokemon;
+            pokemonJSON = resultList[index++];
             await getPokemonBasicData(pokemonJSON.name).then((pokemon) => {
                 grid += `
                 <div class="img-container" onclick="location.href='pokemon.html?id=${pokemon.id}'">
