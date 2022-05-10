@@ -17,7 +17,7 @@ const pokemonSchema = new mongoose.Schema({
     id: Number,
     stats: [Object],
     sprite: String
-});
+}, { collection: 'pokemon' });
 
 const pokemonModel = mongoose.model("pokemon", pokemonSchema);
 
@@ -31,7 +31,12 @@ app.get('/', (req, res) => {
 })
 
 app.get('/pokemon/:pokemonId', (req, res) => {
-    res.json({id: req.params.pokemonId});
+    pokemonModel.find({ id: req.params.pokemonId }, function (err, pokemon) {
+        if (err) {
+            console.log("Error " + err);
+        }
+        res.json(pokemon);
+    });
 })
 
 app.get('/name/:pokemonName', (req, res) => {
