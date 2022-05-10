@@ -40,7 +40,40 @@ app.get('/pokemon/:pokemonId', (req, res) => {
 })
 
 app.get('/name/:pokemonName', (req, res) => {
-    res.sendFile(path.join(__dirname+'/index.html'));
+    pokemonModel.find({
+        name: req.params.pokemonName
+    }, function (err, pokemon) {
+        if (err) {
+            console.log("Error " + err);
+        }
+        res.json(pokemon);
+    });
+})
+
+app.get('/type/:pokemonType', (req, res) => {
+    pokemonModel.find({
+        types: {
+            $in: req.params.pokemonType
+        }
+    }, function (err, pokemon) {
+        if (err) {
+            console.log("Error " + err);
+        }
+        res.json(pokemon);
+    });
+})
+
+app.get('/ability/:pokemonAbility', (req, res) => {
+    pokemonModel.find({
+        abilities: {
+            $in: req.params.pokemonAbility
+        }
+    }, function (err, pokemon) {
+        if (err) {
+            console.log("Error " + err);
+        }
+        res.json(pokemon);
+    });
 })
 
 app.listen(port, () => {
