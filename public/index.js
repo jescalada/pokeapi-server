@@ -1,4 +1,4 @@
-let totalNumberOfPokemon = 900; // todo change
+let totalNumberOfPokemon = 26;
 
 async function displayPokemonOnFront() {
     await getRandomPokemonData().then((randomPokemon) => {
@@ -32,10 +32,10 @@ function getPokemonInfo() {
 }
 
 async function loadPokemonById(pokemonId) {
-    const pokemon = await $.get(`https://pokeapi.co/api/v2/pokemon/${pokemonId}/`, function (pokemon, status) {
+    const pokemon = await $.get(`/pokemon/${pokemonId}/`, function (pokemon, status) {
 
     });
-    return pokemon;
+    return pokemon[0];
 }
 
 async function getRandomPokemonData() {
@@ -46,7 +46,7 @@ async function getRandomPokemonData() {
         pokemonList[i] = {
             id: randomPokemon['id'],
             name: randomPokemon['name'],
-            sprite: randomPokemon.sprites.other['official-artwork'].front_default
+            sprite: randomPokemon['sprite']
         };
     }
     return pokemonList;
