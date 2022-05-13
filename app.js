@@ -56,7 +56,14 @@ app.get('/name/:pokemonName', (req, res) => {
         if (err) {
             console.log("Error: " + err);
         }
-        res.json(pokemon);
+        // Writes an entry object to the timeline
+        let entry = {
+            query: `/name/${req.params.pokemonName}`,
+            timestamp: Date.now()
+        }
+        timelineModel.insertMany(entry, () => {
+            res.json(pokemon);
+        })
     });
 })
 
@@ -69,7 +76,14 @@ app.get('/type/:pokemonType', (req, res) => {
         if (err) {
             console.log("Error " + err);
         }
-        res.json(pokemon);
+        // Writes an entry object to the timeline
+        let entry = {
+            query: `/type/${req.params.pokemonType}`,
+            timestamp: Date.now()
+        }
+        timelineModel.insertMany(entry, () => {
+            res.json(pokemon);
+        })
     });
 })
 
@@ -82,10 +96,17 @@ app.get('/ability/:pokemonAbility', (req, res) => {
         if (err) {
             console.log("Error " + err);
         }
-        res.json(pokemon);
+        // Writes an entry object to the timeline
+        let entry = {
+            query: `/ability/${req.params.pokemonAbility}`,
+            timestamp: Date.now()
+        }
+        timelineModel.insertMany(entry, () => {
+            res.json(pokemon);
+        })
     });
 })
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`Listening on port ${port}`)
 })
