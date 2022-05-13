@@ -24,6 +24,13 @@ const pokemonSchema = new mongoose.Schema({
 
 const pokemonModel = mongoose.model("pokemon", pokemonSchema);
 
+const timelineSchema = new mongoose.Schema({
+    query: String,
+    timestamp: Date
+}, { collection: 'timeline' });
+
+const timelineModel = mongoose.model("timeline", timelineSchema);
+
 mongoose.connect("mongodb+srv://juan:Rocco123@cluster0.nxfhi.mongodb.net/pokemon-db?retryWrites=true&w=majority", {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -38,7 +45,7 @@ app.get('/pokemon/:pokemonId', (req, res) => {
         if (err) {
             console.log("Error " + err);
         }
-        res.json(pokemon);
+        res.json(pokemon)
     });
 })
 
