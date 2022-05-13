@@ -1,17 +1,17 @@
 const express = require('express')
-const bodyparser = require("body-parser");
-const mongoose = require('mongoose');
-const path = require('path');
+const bodyparser = require("body-parser")
+const mongoose = require('mongoose')
+const path = require('path')
 
 const app = express()
 const port = process.env.PORT || 3000
 
 app.use(bodyparser.urlencoded({
     extended: true
-}));
+}))
 
 // Tells our app to keep in mind the folder called "public", where we have various assets
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/public'))
 
 const pokemonSchema = new mongoose.Schema({
     name: String,
@@ -20,14 +20,14 @@ const pokemonSchema = new mongoose.Schema({
     id: Number,
     stats: [Object],
     sprite: String
-}, { collection: 'pokemon' });
+}, { collection: 'pokemon' })
 
 const pokemonModel = mongoose.model("pokemon", pokemonSchema);
 
 const timelineSchema = new mongoose.Schema({
     query: String,
     timestamp: Date
-}, { collection: 'timeline' });
+}, { collection: 'timeline' })
 
 const timelineModel = mongoose.model("timeline", timelineSchema);
 
@@ -37,13 +37,13 @@ mongoose.connect("mongodb+srv://juan:Rocco123@cluster0.nxfhi.mongodb.net/pokemon
 });
 
 app.get('/', (req, res) => {
-    res.sendFile('public/index.html');
+    res.sendFile('public/index.html')
 })
 
 app.get('/pokemon/:pokemonId', (req, res) => {
     pokemonModel.find({ id: req.params.pokemonId }, function (err, pokemon) {
         if (err) {
-            console.log("Error " + err);
+            console.log("Error " + err)
         }
         res.json(pokemon)
     });
@@ -54,7 +54,7 @@ app.get('/name/:pokemonName', (req, res) => {
         name: req.params.pokemonName
     }, function (err, pokemon) {
         if (err) {
-            console.log("Error: " + err);
+            console.log("Error: " + err)
         }
         // Writes an entry object to the timeline
         let entry = {
@@ -62,7 +62,7 @@ app.get('/name/:pokemonName', (req, res) => {
             timestamp: Date.now()
         }
         timelineModel.insertMany(entry, () => {
-            res.json(pokemon);
+            res.json(pokemon)
         })
     });
 })
@@ -74,7 +74,7 @@ app.get('/type/:pokemonType', (req, res) => {
         }
     }, function (err, pokemon) {
         if (err) {
-            console.log("Error " + err);
+            console.log("Error " + err)
         }
         // Writes an entry object to the timeline
         let entry = {
@@ -82,7 +82,7 @@ app.get('/type/:pokemonType', (req, res) => {
             timestamp: Date.now()
         }
         timelineModel.insertMany(entry, () => {
-            res.json(pokemon);
+            res.json(pokemon)
         })
     });
 })
@@ -94,7 +94,7 @@ app.get('/ability/:pokemonAbility', (req, res) => {
         }
     }, function (err, pokemon) {
         if (err) {
-            console.log("Error " + err);
+            console.log("Error " + err)
         }
         // Writes an entry object to the timeline
         let entry = {
@@ -102,9 +102,18 @@ app.get('/ability/:pokemonAbility', (req, res) => {
             timestamp: Date.now()
         }
         timelineModel.insertMany(entry, () => {
-            res.json(pokemon);
+            res.json(pokemon)
         })
     });
+})
+
+app.get('/timeline', (req, res) => {
+    timelineModel.find({}, (err, entries) => {
+        if (err) {
+            console.log("Error " + err)
+        }
+        res.json(entries)
+    })
 })
 
 app.listen(port, () => {
