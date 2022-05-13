@@ -162,10 +162,18 @@ i:hover {
 }
 
 #timeline {
-    border: #333 1px solid;
+    border: rgb(0, 0, 0) 3px solid;
+    border-radius: 1rem;
+    background-color: #ffa0a0;
     margin: 1rem;
     max-height: 10rem;
     overflow: auto;
+}
+
+#timeline h2 {
+    text-align: center;
+    padding: 0;
+    margin: 0.5rem 0;
 }
 
 #timeline ul {

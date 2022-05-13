@@ -44,6 +44,15 @@ async function loadPokemonListByAbility(ability) {
     }
 }
 
+async function loadTimeline() {
+    try {
+        const timeline = await $.get(`/timeline/`, function (timeline, status) {});
+        return timeline;
+    } catch {
+        return null;
+    }
+}
+
 // Gets the basic data needed to display a pokemon to the client.
 async function getPokemonBasicData(name) {
     let pokemon = await loadPokemonByName(name);
@@ -77,7 +86,6 @@ async function searchByName() {
         grid += `</div>`;
         $("#results").html(grid);
     });
-
 }
 
 async function searchByAbility() {
@@ -138,4 +146,14 @@ async function searchByType() {
     }
     grid += `</div>`;
     $("#results").html(grid);
+
+    
+    await loadTimeline().then((timeline) => {
+        $("#timeline ul").empty();
+        let text = ""
+        timeline.forEach(entry => {
+            text += `<li>${entry.query}\t${entry.timestamp}</li>`
+        });
+        $("#timeline ul").append(text);
+    })
 }
