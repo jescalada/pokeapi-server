@@ -64,9 +64,19 @@ async function getPokemonBasicData(name) {
     return result;
 }
 
+// Gets the basic data needed to display a pokemon to the client.
+async function getPokemonBasicDataById(id) {
+    let pokemon = await loadPokemonById(id);
+    let result = {
+        id: pokemon['id'],
+        name: pokemon['name'],
+        sprite: pokemon.sprite
+    };
+    return result;
+}
+
 // Searches a pokemon by name and appends it to the DOM if it exists
-async function searchByName() {
-    let name = $("#search-box").val();
+async function searchByName(name=$("#search-box").val()) {
     await getPokemonBasicData(name).then((pokemon) => {
         let grid = `
             <div id="grid">
@@ -86,10 +96,11 @@ async function searchByName() {
         grid += `</div>`;
         $("#results").html(grid);
     });
+
+    loadTimelineHandler();
 }
 
-async function searchByAbility() {
-    let ability = $("#search-box").val(); // If the word has spaces, replace them with dashes to match API format
+async function searchByAbility(ability=$("#search-box").val()) {
     let resultList = await loadPokemonListByAbility(ability);
     let numberOfResults = resultList.length;
     let rows = Math.ceil(numberOfResults / 3);
@@ -104,7 +115,7 @@ async function searchByAbility() {
                 break;
             }
             pokemonJSON = resultList[index++];
-            await getPokemonBasicData(pokemonJSON.name).then((pokemon) => {
+            await getPokemonBasicDataById(pokemonJSON.id).then((pokemon) => {
                 grid += `
                 <div class="img-container" onclick="location.href='pokemon.html?id=${pokemon.id}'">
                     <img src="${pokemon.sprite}" alt="${pokemon.name}" style="width:100%">
@@ -116,10 +127,11 @@ async function searchByAbility() {
     }
     grid += `</div>`;
     $("#results").html(grid);
+    
+    loadTimelineHandler();
 }
 
-async function searchByType() {
-    let type = $("#search-box").val();
+async function searchByType(type=$("#search-box").val()) {
     let resultList = await loadPokemonListByType(type);
     let numberOfResults = resultList.length;
     let rows = Math.ceil(numberOfResults / 3);
@@ -134,7 +146,7 @@ async function searchByType() {
                 break;
             }
             pokemonJSON = resultList[index++];
-            await getPokemonBasicData(pokemonJSON.name).then((pokemon) => {
+            await getPokemonBasicDataById(pokemonJSON.id).then((pokemon) => {
                 grid += `
                 <div class="img-container" onclick="location.href='pokemon.html?id=${pokemon.id}'">
                     <img src="${pokemon.sprite}" alt="${pokemon.name}" style="width:100%">
@@ -146,13 +158,17 @@ async function searchByType() {
     }
     grid += `</div>`;
     $("#results").html(grid);
-
     
+    loadTimelineHandler();
+}
+
+async function loadTimelineHandler() {
     await loadTimeline().then((timeline) => {
         $("#timeline ul").empty();
         let text = ""
         timeline.forEach(entry => {
-            text += `<li>${entry.query}\t${entry.timestamp}</li>`
+            let timeData = entry.timestamp.split("T")
+            text += `<li onclick="parseQuery('${entry.query}')">Query: ${entry.query}<br>${timeData[0]} ${timeData[1].substring(0,8)}</li>`
         });
         $("#timeline ul").append(text);
     })
