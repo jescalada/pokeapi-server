@@ -157,3 +157,18 @@ async function searchByType() {
         $("#timeline ul").append(text);
     })
 }
+
+async function parseQuery(query) {
+    let routes = query.split("/")
+    if (routes[1] === "name") {
+        await searchByName(routes[2])
+    } else if (routes[1] === "type") {
+        await searchByType(routes[2])
+    } else if (routes[1] === "ability") {
+        await searchByAbility(routes[2])
+    } else {
+        console.log("Error parsing the query routes!")
+    }
+}
+
+loadTimelineHandler();
