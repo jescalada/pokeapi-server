@@ -167,6 +167,7 @@ i:hover {
     background-color: #ffa0a0;
     margin: 1rem;
     max-height: 10rem;
+    max-width: 15rem;
     overflow: auto;
 }
 
@@ -189,5 +190,10 @@ i:hover {
     color: #4d88ff;
     background-color: #ffd3d0;
     font-weight: bold;
-    border-radius: 10rem;
+    border-radius: 1rem;
+    line-height: 1.5rem;
+}
+
+#timeline li:hover {
+    cursor: pointer;
 }

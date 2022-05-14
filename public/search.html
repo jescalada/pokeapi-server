@@ -30,12 +30,14 @@
     </nav>
 
     <main>
-        <div class="row">Search By:</div>
-        <div id="search-form" class="row">
-            <div id="search-options" class="col">
-                <button onclick="searchByName()">Name</button>
-                <button onclick="searchByType()">Type</button>
-                <button onclick="searchByAbility()">Ability</button>
+        <div class="row" style="flex-direction: column;">
+            <div class="row col">Search By:</div>
+            <div id="search-form" class="row col">
+                <div id="search-options" class="col">
+                    <button onclick="searchByName()">Name</button>
+                    <button onclick="searchByType()">Type</button>
+                    <button onclick="searchByAbility()">Ability</button>
+                </div>
             </div>
             <div id="timeline" class="col">
                 <h2>Timeline</h2>
@@ -52,10 +54,11 @@
                     <li>/type/Water</li>
                 </ul>
             </div>
+            <div class="row">
+                <input id="search-box" type="text" placeholder="Search...">
+            </div>
         </div>
-        <div class="row">
-            <input id="search-box" type="text" placeholder="Search...">
-        </div>
+        
         <div id="results">
 
         </div>
